@@ -1,97 +1,52 @@
 package nl.han.ica.datastructures;
 
-public class HANLinkedList<T>/* implements IHANLinkedList*/ {
-	/*private LinkedList<T> next;
-	private int index;
-	private T value;
+import java.util.ArrayList;
+import java.util.List;
 
-	public LinkedList(LinkedList<T> next, int index, T value) {
-		this.next = next;
-		this.index = index;
-		this.value = value;
-	}
+public class HANLinkedList<T> implements IHANLinkedList {
+	List<Object> nodes = new ArrayList<>();
 
-	public LinkedList(LinkedList<T> next, T value) {
-		this.next = next;
-		this.value = value;
-		this.index = 0;
-	}
-
-	public LinkedList(T value, int index) {
-		this.value = value;
-		this.index = index;
-	}
-
-	public LinkedList<T> getNext() {
-		return next;
-	}
-
-	public int getIndex() {
-		return index;
-	}
-
-	public T getValue() {
-		return value;
-	}
-
-	public void setNext(LinkedList<T> next) {
-		this.next = next;
-	}
-
-	public void setIndex(int index) {
-		this.index = index;
-	}
-
-	public void setValue(T value) {
-		this.value = value;
+	public HANLinkedList(List<Object> nodes) {
+		this.nodes = nodes;
 	}
 
 	@Override
 	public void addFirst(Object value) {
-		next = new LinkedList<>(this.next, this.index++, this.value);
-		this.value = (T) value;
+		nodes.add(0, value);
 	}
 
 	@Override
 	public void clear() {
-		//maak gebruik van garbage collection
-		this.next = null;
-		this.value = null;
+
 	}
 
 	@Override
 	public void insert(int index, Object value) {
-		if(index == this.index){
-			addFirst(value);
-		} else {
-			this.next.insert(index, value);
-		}
+		nodes.add(index, value);
 	}
 
 	@Override
 	public void delete(int pos) {
-		if(this.index - pos == 1){
-			this.next = this.next.
-		}
+		nodes.remove(pos);
 	}
 
 	@Override
 	public Object get(int pos) {
-		return null;
+		return nodes.get(pos);
 	}
 
 	@Override
 	public void removeFirst() {
-
+		nodes.remove(0);
 	}
 
 	@Override
 	public Object getFirst() {
-		return null;
+		return nodes.get(0);
 	}
 
 	@Override
 	public int getSize() {
-		return 0;
-	}*/
+		return nodes.size();
+	}
 }
