@@ -3,7 +3,7 @@ package nl.han.ica.datastructures;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Stack implements IHANStack {
+public class HANStack<T> implements IHANStack {
 
 	List<Object> stack = new ArrayList<>();
 

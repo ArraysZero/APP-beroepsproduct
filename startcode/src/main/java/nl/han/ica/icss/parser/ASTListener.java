@@ -3,6 +3,7 @@ package nl.han.ica.icss.parser;
 import java.util.Stack;
 
 
+import nl.han.ica.datastructures.HANStack;
 import nl.han.ica.datastructures.IHANStack;
 import nl.han.ica.icss.ast.*;
 import nl.han.ica.icss.ast.literals.*;
@@ -26,7 +27,7 @@ public class ASTListener extends ICSSBaseListener {
 
 	public ASTListener() {
 		ast = new AST();
-		//currentContainer = new HANStack<>();
+		currentContainer = new HANStack<>();
 	}
     public AST getAST() {
         return ast;
