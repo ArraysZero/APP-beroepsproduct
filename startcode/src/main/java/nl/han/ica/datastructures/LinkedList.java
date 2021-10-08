@@ -1,4 +1,4 @@
 package nl.han.ica.datastructures;
 
-public class LinkedList {
+public class LinkedList<T> implements IHANLinkedList {
 }
