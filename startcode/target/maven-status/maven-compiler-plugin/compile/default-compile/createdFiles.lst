@@ -10,7 +10,6 @@ nl\han\ica\icss\ast\literals\ColorLiteral.class
 nl\han\ica\icss\ast\operations\MultiplyOperation.class
 nl\han\ica\icss\ast\Stylerule.class
 nl\han\ica\icss\ast\Expression.class
-nl\han\ica\datastructures\Stack.class
 nl\han\ica\icss\ast\VariableReference.class
 nl\han\ica\icss\ast\Selector.class
 nl\han\ica\icss\gui\MainGui$6.class
@@ -32,6 +31,7 @@ nl\han\ica\icss\checker\Checker.class
 nl\han\ica\icss\ast\literals\BoolLiteral.class
 nl\han\ica\icss\ast\literals\PercentageLiteral.class
 nl\han\ica\icss\parser\ICSSLexer.class
+nl\han\ica\datastructures\HANStack.class
 nl\han\ica\datastructures\LinkedList.class
 nl\han\ica\icss\gui\MainGui$8.class
 nl\han\ica\icss\gui\OutputPane.class

@@ -1,19 +1,19 @@
 package nl.han.ica.datastructures;
 
-public class Queue<T> implements IHANQueue{
-	private Queue<T> next;
+public class HANQueue<T> implements IHANQueue{
+	private HANQueue<T> next;
 	private T value;
 
-	public Queue(Queue<T> next, T value) {
+	public HANQueue(HANQueue<T> next, T value) {
 		this.next = next;
 		this.value = value;
 	}
 
-	public Queue(T value) {
+	public HANQueue(T value) {
 		this.value = value;
 	}
 
-	public Queue<T> getNext() {
+	public HANQueue<T> getNext() {
 		return next;
 	}
 
@@ -36,7 +36,7 @@ public class Queue<T> implements IHANQueue{
 		if (this.next != null){
 			this.next.enqueue(value);
 		} else {
-			this.next = new Queue(value);
+			this.next = new HANQueue(value);
 		}
 	}
 

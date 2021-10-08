@@ -1,6 +1,6 @@
 package nl.han.ica.datastructures;
 
-public class LinkedList<T>/* implements IHANLinkedList*/ {
+public class HANLinkedList<T>/* implements IHANLinkedList*/ {
 	/*private LinkedList<T> next;
 	private int index;
 	private T value;

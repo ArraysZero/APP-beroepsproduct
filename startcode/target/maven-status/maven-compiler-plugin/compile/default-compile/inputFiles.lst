@@ -3,7 +3,6 @@ C:\Users\danib\Documents\GitHub\school\ASD\APP\beroepsproduct\startcode\src\main
 C:\Users\danib\Documents\GitHub\school\ASD\APP\beroepsproduct\startcode\target\generated-sources\antlr4\nl\han\ica\icss\parser\ICSSBaseListener.java
 C:\Users\danib\Documents\GitHub\school\ASD\APP\beroepsproduct\startcode\src\main\java\nl\han\ica\icss\ast\PropertyName.java
 C:\Users\danib\Documents\GitHub\school\ASD\APP\beroepsproduct\startcode\target\generated-sources\antlr4\nl\han\ica\icss\parser\ICSSListener.java
-C:\Users\danib\Documents\GitHub\school\ASD\APP\beroepsproduct\startcode\src\main\java\nl\han\ica\datastructures\Stack.java
 C:\Users\danib\Documents\GitHub\school\ASD\APP\beroepsproduct\startcode\src\main\java\nl\han\ica\datastructures\Queue.java
 C:\Users\danib\Documents\GitHub\school\ASD\APP\beroepsproduct\startcode\src\main\java\nl\han\ica\icss\ast\Stylesheet.java
 C:\Users\danib\Documents\GitHub\school\ASD\APP\beroepsproduct\startcode\src\main\java\nl\han\ica\icss\ast\Operation.java
@@ -20,6 +19,7 @@ C:\Users\danib\Documents\GitHub\school\ASD\APP\beroepsproduct\startcode\src\main
 C:\Users\danib\Documents\GitHub\school\ASD\APP\beroepsproduct\startcode\src\main\java\nl\han\ica\icss\gui\Main.java
 C:\Users\danib\Documents\GitHub\school\ASD\APP\beroepsproduct\startcode\src\main\java\nl\han\ica\icss\Pipeline.java
 C:\Users\danib\Documents\GitHub\school\ASD\APP\beroepsproduct\startcode\src\main\java\nl\han\ica\datastructures\IHANQueue.java
+C:\Users\danib\Documents\GitHub\school\ASD\APP\beroepsproduct\startcode\src\main\java\nl\han\ica\datastructures\HANStack.java
 C:\Users\danib\Documents\GitHub\school\ASD\APP\beroepsproduct\startcode\src\main\java\nl\han\ica\icss\ast\IfClause.java
 C:\Users\danib\Documents\GitHub\school\ASD\APP\beroepsproduct\startcode\src\main\java\nl\han\ica\icss\ast\operations\SubtractOperation.java
 C:\Users\danib\Documents\GitHub\school\ASD\APP\beroepsproduct\startcode\src\main\java\nl\han\ica\icss\ast\Selector.java
