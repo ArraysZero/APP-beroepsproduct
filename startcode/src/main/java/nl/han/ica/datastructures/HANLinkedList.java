@@ -6,6 +6,9 @@ import java.util.List;
 public class HANLinkedList<T> implements IHANLinkedList {
 	List<Object> nodes = new ArrayList<>();
 
+	public HANLinkedList() {
+	}
+
 	public HANLinkedList(List<Object> nodes) {
 		this.nodes = nodes;
 	}
