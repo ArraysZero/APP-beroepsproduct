@@ -3,6 +3,7 @@ nl\han\ica\icss\ast\Stylesheet.class
 nl\han\ica\icss\transforms\Transform.class
 nl\han\ica\icss\checker\SemanticError.class
 nl\han\ica\icss\ast\types\ExpressionType.class
+nl\han\ica\datastructures\HANQueue.class
 nl\han\ica\icss\ast\AST.class
 nl\han\ica\icss\gui\MainGui$3.class
 nl\han\ica\icss\ast\VariableAssignment.class
@@ -17,6 +18,7 @@ nl\han\ica\icss\gui\FeedbackPane.class
 nl\han\ica\icss\gui\ASTPane.class
 nl\han\ica\icss\ast\selectors\ClassSelector.class
 nl\han\ica\icss\gui\MainGui$2.class
+nl\han\ica\datastructures\HANLinkedList.class
 nl\han\ica\icss\ast\ASTNode.class
 nl\han\ica\icss\ast\ElseClause.class
 nl\han\ica\icss\gui\Main.class
@@ -32,7 +34,6 @@ nl\han\ica\icss\ast\literals\BoolLiteral.class
 nl\han\ica\icss\ast\literals\PercentageLiteral.class
 nl\han\ica\icss\parser\ICSSLexer.class
 nl\han\ica\datastructures\HANStack.class
-nl\han\ica\datastructures\LinkedList.class
 nl\han\ica\icss\gui\MainGui$8.class
 nl\han\ica\icss\gui\OutputPane.class
 nl\han\ica\icss\gui\MainGui$4.class
@@ -49,7 +50,6 @@ nl\han\ica\icss\gui\ASTPane$1.class
 nl\han\ica\icss\ast\IfClause.class
 nl\han\ica\icss\parser\ASTListener.class
 nl\han\ica\datastructures\IHANQueue.class
-nl\han\ica\datastructures\Queue.class
 nl\han\ica\icss\ast\selectors\IdSelector.class
 nl\han\ica\icss\ast\operations\SubtractOperation.class
 nl\han\ica\datastructures\IHANLinkedList.class
