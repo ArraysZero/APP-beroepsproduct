@@ -28,8 +28,6 @@ public class ASTListener extends ICSSBaseListener {
 	public ASTListener() {
 		ast = new AST();
 		currentContainer = new HANStack<>();
-
-		System.out.println("ASTListener");
 	}
     public AST getAST() {
         return ast;
