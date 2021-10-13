@@ -18,12 +18,12 @@ public class Checker {
 
     }
 
-    //TODO: check scope
+    //TODO: check scope -> VariableExistence
 
-    //TODO: check juiste waarde toegekend aan property
+    //TODO: check juiste waarde toegekend aan property -> CheckTypes
 
-    //TODO: variabele heeft een waarde
+    //TODO: rekenen met cijfers -> CheckOperation
 
-    //TODO: variabele blijft van zelfde type
+    //TODO: als conditie is boolean -> CheckCondition
 
 }
