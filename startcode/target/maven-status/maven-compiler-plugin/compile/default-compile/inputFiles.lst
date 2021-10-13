@@ -34,6 +34,7 @@ C:\Users\danib\Documents\GitHub\school\ASD\APP\beroepsproduct\startcode\src\main
 C:\Users\danib\Documents\GitHub\school\ASD\APP\beroepsproduct\startcode\target\generated-sources\antlr4\nl\han\ica\icss\parser\ICSSLexer.java
 C:\Users\danib\Documents\GitHub\school\ASD\APP\beroepsproduct\startcode\src\main\java\nl\han\ica\icss\ast\Expression.java
 C:\Users\danib\Documents\GitHub\school\ASD\APP\beroepsproduct\startcode\src\main\java\nl\han\ica\icss\parser\ASTListener.java
+C:\Users\danib\Documents\GitHub\school\ASD\APP\beroepsproduct\startcode\src\main\java\nl\han\ica\icss\ast\operations\DivideOperation.java
 C:\Users\danib\Documents\GitHub\school\ASD\APP\beroepsproduct\startcode\target\generated-sources\antlr4\nl\han\ica\icss\parser\ICSSParser.java
 C:\Users\danib\Documents\GitHub\school\ASD\APP\beroepsproduct\startcode\src\main\java\nl\han\ica\icss\checker\Checker.java
 C:\Users\danib\Documents\GitHub\school\ASD\APP\beroepsproduct\startcode\src\main\java\nl\han\ica\icss\ast\operations\AddOperation.java
