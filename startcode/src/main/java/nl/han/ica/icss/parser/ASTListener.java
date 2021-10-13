@@ -100,22 +100,26 @@ public class ASTListener extends ICSSBaseListener {
 
 	@Override
 	public void enterIfclause(ICSSParser.IfclauseContext ctx) {
-		super.enterIfclause(ctx);
+		ASTNode clause = new IfClause();
+		currentContainer.push(clause);
 	}
 
 	@Override
 	public void exitIfclause(ICSSParser.IfclauseContext ctx) {
-		super.exitIfclause(ctx);
+		ASTNode clause = currentContainer.pop();
+		currentContainer.peek().addChild(clause);
 	}
 
 	@Override
 	public void enterElseclause(ICSSParser.ElseclauseContext ctx) {
-		super.enterElseclause(ctx);
+		ASTNode clause = new ElseClause();
+		currentContainer.push(clause);
 	}
 
 	@Override
 	public void exitElseclause(ICSSParser.ElseclauseContext ctx) {
-		super.exitElseclause(ctx);
+		ASTNode clause = currentContainer.pop();
+		currentContainer.peek().addChild(clause);
 	}
 
 	@Override

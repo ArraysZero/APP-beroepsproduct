@@ -55,7 +55,7 @@ property: LOWER_IDENT;
 
 variableassignment: variable ASSIGNMENT_OPERATOR expression+ SEMICOLON;
 
-ifclause: IF BOX_BRACKET_OPEN (variable | boolliteral) BOX_BRACKET_CLOSE OPEN_BRACE body CLOSE_BRACE;
+ifclause: IF BOX_BRACKET_OPEN (variable | boolliteral) BOX_BRACKET_CLOSE OPEN_BRACE body CLOSE_BRACE elseclause?;
 elseclause: ELSE OPEN_BRACE body CLOSE_BRACE;
 
 expression: literal | expression (MUL | DIV) expression | expression (PLUS | MIN) expression;
@@ -73,6 +73,6 @@ tagselector: LOWER_IDENT;
 idselector: ID_IDENT;
 selector: (tagselector | classselector | idselector);
 
-body: (declaration | ifclause | elseclause | variableassignment)*;
+body: (declaration | ifclause | variableassignment)*;
 
 
