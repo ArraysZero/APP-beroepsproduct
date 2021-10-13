@@ -98,11 +98,6 @@ public class ASTListener extends ICSSBaseListener {
 		currentContainer.peek().addChild(assignment);
 	}
 
-	/*@Override
-	public void enterVariableReference(ICSSParser.VariableReferenceContext ctx) {
-
-	}*/
-
 	@Override
 	public void enterIfclause(ICSSParser.IfclauseContext ctx) {
 		super.enterIfclause(ctx);
@@ -125,22 +120,43 @@ public class ASTListener extends ICSSBaseListener {
 
 	@Override
 	public void enterExpression(ICSSParser.ExpressionContext ctx) {
-		super.enterExpression(ctx);
+		if(ctx.getChildCount() == 3){
+			Operation operation;
+			switch (ctx.getChild(1).getText()){
+				case "*":
+					operation = new MultiplyOperation();
+					break;
+				case "/":
+					operation = new DivideOperation();
+					break;
+				case "+":
+					operation = new AddOperation();
+					break;
+				default:
+					operation = new SubtractOperation();
+			}
+			currentContainer.push(operation);
+		}
 	}
 
 	@Override
 	public void exitExpression(ICSSParser.ExpressionContext ctx) {
-		super.exitExpression(ctx);
+		if (expressionHasTerminalNode(ctx)) {
+			ASTNode operation = currentContainer.pop();
+			currentContainer.peek().addChild(operation);
+		}
 	}
 
 	@Override
 	public void enterBoolliteral(ICSSParser.BoolliteralContext ctx) {
-		super.enterBoolliteral(ctx);
+		ASTNode bool = new BoolLiteral(ctx.getText());
+		currentContainer.push(bool);
 	}
 
 	@Override
 	public void exitBoolliteral(ICSSParser.BoolliteralContext ctx) {
-		super.exitBoolliteral(ctx);
+		ASTNode bool = currentContainer.pop();
+		currentContainer.peek().addChild(bool);
 	}
 
 	@Override
@@ -179,22 +195,26 @@ public class ASTListener extends ICSSBaseListener {
 
 	@Override
 	public void enterScalarliteral(ICSSParser.ScalarliteralContext ctx) {
-		super.enterScalarliteral(ctx);
+		ASTNode scalar = new ScalarLiteral(ctx.getText());
+		currentContainer.push(scalar);
 	}
 
 	@Override
 	public void exitScalarliteral(ICSSParser.ScalarliteralContext ctx) {
-		super.exitScalarliteral(ctx);
+		ASTNode scalar = currentContainer.pop();
+		currentContainer.peek().addChild(scalar);
 	}
 
 	@Override
 	public void enterVariable(ICSSParser.VariableContext ctx) {
-		super.enterVariable(ctx);
+		ASTNode var = new VariableReference(ctx.getText());
+		currentContainer.push(var);
 	}
 
 	@Override
 	public void exitVariable(ICSSParser.VariableContext ctx) {
-		super.exitVariable(ctx);
+		ASTNode var = currentContainer.pop();
+		currentContainer.peek().addChild(var);
 	}
 
 	@Override
@@ -261,5 +281,9 @@ public class ASTListener extends ICSSBaseListener {
 	@Override
 	public void exitEveryRule(ParserRuleContext ctx) {
 		super.exitEveryRule(ctx);
+	}
+
+	private boolean expressionHasTerminalNode(ICSSParser.ExpressionContext ctx) {
+		return ctx.PLUS() != null || ctx.MIN() != null || ctx.MUL() != null || ctx.DIV() != null;
 	}
 }

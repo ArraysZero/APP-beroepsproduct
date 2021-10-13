@@ -47,6 +47,7 @@ class ParserTest {
             ParseTreeWalker walker = new ParseTreeWalker();
             walker.walk(listener, parseTree);
 		} catch(ParseCancellationException e) {
+			e.printStackTrace();
 			fail(errorListener.toString());
 		}
 
