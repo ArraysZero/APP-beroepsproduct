@@ -49,7 +49,7 @@ SMALLER_THAN: '<';
 
 //--- PARSER: ---
 stylesheet: variableassignment* stylerule* EOF;
-stylerule: selector OPEN_BRACE declaration+ CLOSE_BRACE ;
+stylerule: selector OPEN_BRACE body CLOSE_BRACE ;
 declaration: property COLON expression SEMICOLON;
 property: LOWER_IDENT;
 
@@ -73,6 +73,6 @@ tagselector: LOWER_IDENT;
 idselector: ID_IDENT;
 selector: (tagselector | classselector | idselector);
 
-body: (declaration | ifclause | variableassignment)*;
+body: (declaration | ifclause | elseclause | variableassignment)*;
 
 
