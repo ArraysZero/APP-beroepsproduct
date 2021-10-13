@@ -131,6 +131,9 @@ public class ASTListener extends ICSSBaseListener {
 				case "+":
 					operation = new AddOperation();
 					break;
+				case "/":
+					operation = new DivideOperation();
+					break;
 				default:
 					operation = new SubtractOperation();
 			}
