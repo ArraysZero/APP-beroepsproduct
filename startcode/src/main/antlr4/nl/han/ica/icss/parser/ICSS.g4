@@ -49,21 +49,30 @@ SMALLER_THAN: '<';
 
 //--- PARSER: ---
 stylesheet: variableassignment* stylerule* EOF;
-
 stylerule: selector OPEN_BRACE declaration+ CLOSE_BRACE ;
+declaration: property COLON expression SEMICOLON;
+property: LOWER_IDENT;
 
-selector: ID_IDENT | CLASS_IDENT | tag;
-declaration: property COLON value SEMICOLON;
-property: 'color' | 'background-color' | 'width' | 'height';
-value: COLOR | PERCENTAGE | PIXELSIZE | TRUE | FALSE variable;
-tag: LOWER_IDENT;
-ifclause: IF BOX_BRACKET_OPEN expression BOX_BRACKET_CLOSE OPEN_BRACE body CLOSE_BRACE;
-ifelseclause: IF BOX_BRACKET_OPEN expression BOX_BRACKET_CLOSE OPEN_BRACE body CLOSE_BRACE ELSE OPEN_BRACE body CLOSE_BRACE;
-body: stylerule+;
-expression: TRUE | FALSE | comparison;
-comparison: variable comparisonoperation variable;
-comparisonoperation: SAMEVALUE | LARGER_THAN | SMALLER_THAN;
-variable: LOWER_IDENT | CAPITAL_IDENT;
-variableassignment: variable ASSIGNMENT_OPERATOR value;
+variableassignment: variable ASSIGNMENT_OPERATOR expression+ SEMICOLON;
+
+ifclause: IF BOX_BRACKET_OPEN (variable | boolliteral) BOX_BRACKET_CLOSE OPEN_BRACE body CLOSE_BRACE;
+elseclause: ELSE OPEN_BRACE body CLOSE_BRACE;
+
+expression: literal | expression (MUL | DIV) expression | expression (PLUS | MIN) expression;
+
+boolliteral: TRUE | FALSE;
+colorliteral: COLOR;
+percentageliteral: PERCENTAGE;
+pixelliteral: PIXELSIZE;
+scalarliteral: SCALAR;
+variable: CAPITAL_IDENT;
+literal: boolliteral | colorliteral | percentageliteral | pixelliteral | scalarliteral | variable;
+
+classselector: CLASS_IDENT;
+tagselector: LOWER_IDENT;
+idselector: ID_IDENT;
+selector: (tagselector | classselector | idselector);
+
+body: (declaration | ifclause | variableassignment)*;
 
 
