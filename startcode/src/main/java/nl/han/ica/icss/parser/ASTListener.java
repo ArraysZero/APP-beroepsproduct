@@ -28,7 +28,13 @@ public class ASTListener extends ICSSBaseListener {
 	public ASTListener() {
 		ast = new AST();
 		currentContainer = new HANStack<>();
+
+		//TODO: uitlezen antlr tree
+
+
+		//TODO: alle nodes vervolgens in AST plaatsen
 	}
+
     public AST getAST() {
         return ast;
     }

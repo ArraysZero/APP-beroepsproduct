@@ -15,7 +15,9 @@ public class ICSSBaseListener implements ICSSListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterStylesheet(ICSSParser.StylesheetContext ctx) { }
+	@Override public void enterStylesheet(ICSSParser.StylesheetContext ctx) {
+
+	}
 	/**
 	 * {@inheritDoc}
 	 *

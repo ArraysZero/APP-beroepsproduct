@@ -40,10 +40,30 @@ PLUS: '+';
 MIN: '-';
 MUL: '*';
 ASSIGNMENT_OPERATOR: ':=';
+SAMEVALUE: '==';
+LARGER_THAN: '>';
+SMALLER_THAN: '<';
 
 
 
 
 //--- PARSER: ---
-stylesheet: EOF;
+stylesheet: variableassignment* stylerule* EOF;
+
+stylerule: selector OPEN_BRACE declaration+ CLOSE_BRACE ;
+
+selector: ID_IDENT | CLASS_IDENT | tag;
+declaration: property COLON value SEMICOLON;
+property: 'color' | 'background-color' | 'width' | 'height';
+value: COLOR | PERCENTAGE | PIXELSIZE | TRUE | FALSE variable;
+tag: LOWER_IDENT;
+ifclause: IF BOX_BRACKET_OPEN expression BOX_BRACKET_CLOSE OPEN_BRACE body CLOSE_BRACE;
+ifelseclause: IF BOX_BRACKET_OPEN expression BOX_BRACKET_CLOSE OPEN_BRACE body CLOSE_BRACE ELSE OPEN_BRACE body CLOSE_BRACE;
+body: stylerule+;
+expression: TRUE | FALSE | comparison;
+comparison: variable comparisonoperation variable;
+comparisonoperation: SAMEVALUE | LARGER_THAN | SMALLER_THAN;
+variable: LOWER_IDENT | CAPITAL_IDENT;
+variableassignment: variable ASSIGNMENT_OPERATOR value;
+
 
