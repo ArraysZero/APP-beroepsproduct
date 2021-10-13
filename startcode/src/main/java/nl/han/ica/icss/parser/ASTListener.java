@@ -9,6 +9,7 @@ import nl.han.ica.datastructures.IHANStack;
 import nl.han.ica.icss.ast.*;
 import nl.han.ica.icss.ast.literals.*;
 import nl.han.ica.icss.ast.operations.AddOperation;
+import nl.han.ica.icss.ast.operations.DivideOperation;
 import nl.han.ica.icss.ast.operations.MultiplyOperation;
 import nl.han.ica.icss.ast.operations.SubtractOperation;
 import nl.han.ica.icss.ast.selectors.ClassSelector;
@@ -62,7 +63,8 @@ public class ASTListener extends ICSSBaseListener {
 
 	@Override
 	public void exitStylerule(ICSSParser.StyleruleContext ctx) {
-		super.exitStylerule(ctx);
+		ASTNode stylerule = currentContainer.pop();
+		currentContainer.peek().addChild(stylerule);
 	}
 
 	@Override
@@ -73,7 +75,8 @@ public class ASTListener extends ICSSBaseListener {
 
 	@Override
 	public void exitDeclaration(ICSSParser.DeclarationContext ctx) {
-		super.exitDeclaration(ctx);
+		ASTNode declaration = currentContainer.pop();
+		currentContainer.peek().addChild(declaration);
 	}
 
 	@Override
@@ -84,7 +87,8 @@ public class ASTListener extends ICSSBaseListener {
 
 	@Override
 	public void exitProperty(ICSSParser.PropertyContext ctx) {
-		super.exitProperty(ctx);
+		ASTNode property = currentContainer.pop();
+		currentContainer.peek().addChild(property);
 	}
 
 	@Override
@@ -95,7 +99,8 @@ public class ASTListener extends ICSSBaseListener {
 
 	@Override
 	public void exitVariableassignment(ICSSParser.VariableassignmentContext ctx) {
-		super.exitVariableassignment(ctx);
+		ASTNode assignment = currentContainer.pop();
+		currentContainer.peek().addChild(assignment);
 	}
 
 	@Override
@@ -106,7 +111,8 @@ public class ASTListener extends ICSSBaseListener {
 
 	@Override
 	public void exitIfclause(ICSSParser.IfclauseContext ctx) {
-		super.exitIfclause(ctx);
+		ASTNode clause = currentContainer.pop();
+		currentContainer.peek().addChild(clause);
 	}
 
 	@Override
@@ -117,7 +123,8 @@ public class ASTListener extends ICSSBaseListener {
 
 	@Override
 	public void exitElseclause(ICSSParser.ElseclauseContext ctx) {
-		super.exitElseclause(ctx);
+		ASTNode clause = currentContainer.pop();
+		currentContainer.peek().addChild(clause);
 	}
 
 	@Override
@@ -138,152 +145,18 @@ public class ASTListener extends ICSSBaseListener {
 					operation = new SubtractOperation();
 			}
 			currentContainer.push(operation);
+		}
 	}
 
 	@Override
 	public void exitExpression(ICSSParser.ExpressionContext ctx) {
-		super.exitExpression(ctx);
+		if (expressionHasTerminalNode(ctx)) {
+			ASTNode operation = currentContainer.pop();
+			currentContainer.peek().addChild(operation);
+		}
 	}
 
-	@Override
-	public void enterBoolliteral(ICSSParser.BoolliteralContext ctx) {
-		//ASTNode bool = new BoolLiteral();
-		//currentContainer.push(bool);
-	}
-
-	@Override
-	public void exitBoolliteral(ICSSParser.BoolliteralContext ctx) {
-		super.exitBoolliteral(ctx);
-	}
-
-	@Override
-	public void enterColorliteral(ICSSParser.ColorliteralContext ctx) {
-		super.enterColorliteral(ctx);
-	}
-
-	@Override
-	public void exitColorliteral(ICSSParser.ColorliteralContext ctx) {
-		super.exitColorliteral(ctx);
-	}
-
-	@Override
-	public void enterPercentageliteral(ICSSParser.PercentageliteralContext ctx) {
-		super.enterPercentageliteral(ctx);
-	}
-
-	@Override
-	public void exitPercentageliteral(ICSSParser.PercentageliteralContext ctx) {
-		super.exitPercentageliteral(ctx);
-	}
-
-	@Override
-	public void enterPixelliteral(ICSSParser.PixelliteralContext ctx) {
-		super.enterPixelliteral(ctx);
-	}
-
-	@Override
-	public void exitPixelliteral(ICSSParser.PixelliteralContext ctx) {
-		super.exitPixelliteral(ctx);
-	}
-
-	@Override
-	public void enterScalarliteral(ICSSParser.ScalarliteralContext ctx) {
-		super.enterScalarliteral(ctx);
-	}
-
-	@Override
-	public void exitScalarliteral(ICSSParser.ScalarliteralContext ctx) {
-		super.exitScalarliteral(ctx);
-	}
-
-	@Override
-	public void enterVariable(ICSSParser.VariableContext ctx) {
-		ASTNode var = new VariableReference();
-		currentContainer.push(var);
-	}
-
-	@Override
-	public void exitVariable(ICSSParser.VariableContext ctx) {
-		super.exitVariable(ctx);
-	}
-
-	@Override
-	public void enterLiteral(ICSSParser.LiteralContext ctx) {
-		super.enterLiteral(ctx);
-	}
-
-	@Override
-	public void exitLiteral(ICSSParser.LiteralContext ctx) {
-		super.exitLiteral(ctx);
-	}
-
-	@Override
-	public void enterClassselector(ICSSParser.ClassselectorContext ctx) {
-		super.enterClassselector(ctx);
-	}
-
-	@Override
-	public void exitClassselector(ICSSParser.ClassselectorContext ctx) {
-		super.exitClassselector(ctx);
-	}
-
-	@Override
-	public void enterTagselector(ICSSParser.TagselectorContext ctx) {
-		super.enterTagselector(ctx);
-	}
-
-	@Override
-	public void exitTagselector(ICSSParser.TagselectorContext ctx) {
-		super.exitTagselector(ctx);
-	}
-
-	@Override
-	public void enterIdselector(ICSSParser.IdselectorContext ctx) {
-		super.enterIdselector(ctx);
-	}
-
-	@Override
-	public void exitIdselector(ICSSParser.IdselectorContext ctx) {
-		super.exitIdselector(ctx);
-	}
-
-	@Override
-	public void enterSelector(ICSSParser.SelectorContext ctx) {
-		super.enterSelector(ctx);
-	}
-
-	@Override
-	public void exitSelector(ICSSParser.SelectorContext ctx) {
-		super.exitSelector(ctx);
-	}
-
-	@Override
-	public void enterBody(ICSSParser.BodyContext ctx) {
-		super.enterBody(ctx);
-	}
-
-	@Override
-	public void exitBody(ICSSParser.BodyContext ctx) {
-		super.exitBody(ctx);
-	}
-
-	@Override
-	public void enterEveryRule(ParserRuleContext ctx) {
-		super.enterEveryRule(ctx);
-	}
-
-	@Override
-	public void exitEveryRule(ParserRuleContext ctx) {
-		super.exitEveryRule(ctx);
-	}
-
-	@Override
-	public void visitTerminal(TerminalNode node) {
-		super.visitTerminal(node);
-	}
-
-	@Override
-	public void visitErrorNode(ErrorNode node) {
-		super.visitErrorNode(node);
+	private boolean expressionHasTerminalNode(ICSSParser.ExpressionContext ctx) {
+		return ctx.PLUS() != null || ctx.MIN() != null || ctx.MUL() != null || ctx.DIV() != null;
 	}
 }
