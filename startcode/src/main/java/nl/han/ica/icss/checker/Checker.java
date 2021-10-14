@@ -3,6 +3,7 @@ package nl.han.ica.icss.checker;
 import nl.han.ica.datastructures.HANLinkedList;
 import nl.han.ica.datastructures.IHANLinkedList;
 import nl.han.ica.icss.ast.*;
+import nl.han.ica.icss.ast.literals.BoolLiteral;
 import nl.han.ica.icss.ast.literals.ColorLiteral;
 import nl.han.ica.icss.ast.literals.PercentageLiteral;
 import nl.han.ica.icss.ast.literals.PixelLiteral;
@@ -24,7 +25,6 @@ public class Checker {
 
     //TODO: check scope -> VariableExistence
 
-    //TODO: check juiste waarde toegekend aan property -> CheckTypes
     private void checkDeclaration(Declaration declaration){
         switch (declaration.property.name){
             case "color":
@@ -58,5 +58,10 @@ public class Checker {
     //TODO: rekenen met cijfers -> CheckOperation
 
     //TODO: als conditie is boolean -> CheckCondition
+    private void checkIfClause(IfClause clause){
+        if (!(clause.conditionalExpression instanceof BoolLiteral)){
+            clause.setError("conditional expression is not boolean");
+        }
+    }
 
 }
