@@ -7,18 +7,18 @@ import nl.han.ica.icss.ast.literals.*;
 import nl.han.ica.icss.ast.operations.DivideOperation;
 import nl.han.ica.icss.ast.operations.MultiplyOperation;
 import nl.han.ica.icss.ast.types.ExpressionType;
+import org.checkerframework.checker.units.qual.A;
 
+import java.util.ArrayList;
 import java.util.HashMap;
-
+import java.util.List;
 
 
 public class Checker {
 
-    private IHANLinkedList<HashMap<String, ExpressionType>> variableTypes;
+    private IHANLinkedList<HashMap<String, Expression>> variableTypes = new HANLinkedList<>();
 
     public void check(AST ast) {
-         variableTypes = new HANLinkedList<>();
-
         checkNode(ast.root, 0);
     }
 
@@ -34,18 +34,19 @@ public class Checker {
             //System.out.println("if clause");
             checkIfClause((IfClause) node);
         } else if (node instanceof VariableAssignment){
-
+            variableTypes.getFirst().put(((VariableAssignment) node).name.name, ((VariableAssignment) node).expression);
         } else if (node instanceof VariableReference){
-            //checkScope((VariableReference) node);
+            checkScope((VariableReference) node);
         }
 
         if(node.getChildren().size() > 0){
-            //System.out.println("kinderen");
+            variableTypes.addFirst(new HashMap<>());
             depth++;
             for (int i = 0; i < node.getChildren().size(); i++){
-                //System.out.println("een kind");
                 checkNode(node.getChildren().get(i), depth);
             }
+
+            variableTypes.removeFirst();
         }
     }
 
@@ -53,12 +54,17 @@ public class Checker {
 
     //TODO: check scope -> VariableExistence
     private void checkScope(VariableReference reference){
+        boolean exists = false;
+
         for (int i = 0; i < variableTypes.getSize(); i++){
-            if(reference.name == variableTypes.get(i).getVariable().name){
-                return;
+            if (variableTypes.get(i).get(reference.name) != null){
+                exists = true;
             }
         }
-        reference.setError("variabele buiten de scope");
+
+        if (!exists){
+            reference.setError("variable out of scope");
+        }
     }
 
     private void checkDeclaration(Declaration declaration){

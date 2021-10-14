@@ -64,7 +64,6 @@ nl\han\ica\icss\parser\ICSSParser$LiteralContext.class
 nl\han\ica\datastructures\HANStack.class
 nl\han\ica\icss\parser\ICSSParser$VariableContext.class
 nl\han\ica\icss\gui\MainGui$4.class
-nl\han\ica\icss\checker\Variables.class
 nl\han\ica\icss\generator\Generator.class
 nl\han\ica\icss\parser\ICSSParser$ClassselectorContext.class
 nl\han\ica\icss\ast\literals\PixelLiteral.class
