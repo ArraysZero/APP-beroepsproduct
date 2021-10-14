@@ -32,8 +32,10 @@ public class Checker {
         }
 
         if(node.getChildren().size() > 0){
-            System.out.println("kinderen");
-            checkNode(node);
+            //System.out.println("kinderen");
+            for (int i = 0; i < node.getChildren().size() - 1; i++){
+                checkNode(node.getChildren().get(i));
+            }
         }
     }
 
