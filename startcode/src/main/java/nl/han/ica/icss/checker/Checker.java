@@ -3,10 +3,9 @@ package nl.han.ica.icss.checker;
 import nl.han.ica.datastructures.HANLinkedList;
 import nl.han.ica.datastructures.IHANLinkedList;
 import nl.han.ica.icss.ast.*;
-import nl.han.ica.icss.ast.literals.BoolLiteral;
-import nl.han.ica.icss.ast.literals.ColorLiteral;
-import nl.han.ica.icss.ast.literals.PercentageLiteral;
-import nl.han.ica.icss.ast.literals.PixelLiteral;
+import nl.han.ica.icss.ast.literals.*;
+import nl.han.ica.icss.ast.operations.DivideOperation;
+import nl.han.ica.icss.ast.operations.MultiplyOperation;
 import nl.han.ica.icss.ast.types.ExpressionType;
 
 import java.util.HashMap;
@@ -20,7 +19,21 @@ public class Checker {
     public void check(AST ast) {
          variableTypes = new HANLinkedList<>();
 
+        checkNode(ast.root);
+    }
 
+    private void checkNode(ASTNode node){
+        if(node instanceof Declaration){
+            checkDeclaration((Declaration) node);
+        } else if (node instanceof Operation){
+            checkOperation((Operation) node);
+        } else if (node instanceof IfClause){
+            checkIfClause((IfClause) node);
+        }
+
+        if(node.getChildren().size() > 0){
+            checkNode(node);
+        }
     }
 
     //TODO: check scope -> VariableExistence
@@ -56,6 +69,27 @@ public class Checker {
     }
 
     //TODO: rekenen met cijfers -> CheckOperation
+    private void checkOperation(Operation operation){
+        Expression left = operation.lhs;
+        Expression right = operation.rhs;
+
+        if (left instanceof Operation){
+            checkOperation((Operation) left);
+        }
+        if (right instanceof Operation){
+            checkOperation((Operation) right);
+        }
+
+        if (left instanceof ColorLiteral || left instanceof BoolLiteral || right instanceof ColorLiteral || right instanceof BoolLiteral){
+            operation.setError("boolean and color literals are not allowed in operations");
+        }
+
+        if (operation instanceof DivideOperation || operation instanceof MultiplyOperation){
+            if (left instanceof ScalarLiteral || right instanceof ScalarLiteral){
+                operation.setError("multiplacation and division cant be dont with scalar literal");
+            }
+        }
+    }
 
     //TODO: als conditie is boolean -> CheckCondition
     private void checkIfClause(IfClause clause){
