@@ -14,7 +14,7 @@ import java.util.HashMap;
 
 public class Checker {
 
-    private IHANLinkedList<Variables> variableTypes;
+    private IHANLinkedList<HashMap<String, ExpressionType>> variableTypes;
 
     public void check(AST ast) {
          variableTypes = new HANLinkedList<>();
@@ -34,8 +34,7 @@ public class Checker {
             //System.out.println("if clause");
             checkIfClause((IfClause) node);
         } else if (node instanceof VariableAssignment){
-            Variables variable = new Variables((VariableReference) ((VariableAssignment) node).name, depth, ((VariableAssignment) node).expression);
-            variableTypes.addFirst(variable);
+
         } else if (node instanceof VariableReference){
             //checkScope((VariableReference) node);
         }
