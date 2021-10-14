@@ -23,7 +23,6 @@ public class Checker {
     }
 
     private void checkNode(ASTNode node, int depth){
-        //System.out.println("check node");
         if(node instanceof Declaration){
             checkDeclaration((Declaration) node);
         } else if (node instanceof Operation){
@@ -96,7 +95,6 @@ public class Checker {
 
         switch (declaration.property.name){
             case "color":
-                System.out.println("check de color");
                 if(!(value instanceof ColorLiteral)){
                     declaration.setError("color value can only be color literal");
                 }
