@@ -1,122 +1,55 @@
 package nl.han.ica.datastructures;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
-public class HANLinkedList<T> implements IHANLinkedList<T>{
+public class HANLinkedList<T> implements IHANLinkedList {
+	List<Object> nodes = new ArrayList<>();
 
-	private LinkedListNode<T> first = null;
+	public HANLinkedList() {
+	}
+
+	public HANLinkedList(List<Object> nodes) {
+		this.nodes = nodes;
+	}
 
 	@Override
-	public void addFirst(T value) {
-		if (first == null) {
-			first = new LinkedListNode<>(value);
-		} else {
-			LinkedListNode<T> toAdd = new LinkedListNode<>(value);
-			toAdd.setNext(first);
-			first = toAdd;
-		}
+	public void addFirst(Object value) {
+		nodes.add(0, value);
 	}
 
 	@Override
 	public void clear() {
-		first = null;
+
 	}
 
 	@Override
-	public void insert(int index, T value) {
-		LinkedListNode<T> tmp = new LinkedListNode<>(value);
-		LinkedListNode<T> current = first;
-
-		if (first == null) {
-			first = tmp;
-			return;
-		}
-
-		if (index == 0) {
-			tmp.setNext(current);
-			first = tmp;
-			return;
-		}
-
-		if (index > getSize()) {
-			return;
-		}
-
-		int count = 0;
-
-		while (count != index - 1) {
-			current = current.getNext();
-			count++;
-		}
-
-		tmp.setNext(current.getNext());
-		current.setNext(tmp);
+	public void insert(int index, Object value) {
+		nodes.add(index, value);
 	}
 
 	@Override
 	public void delete(int pos) {
-
-		if (pos == 0) {
-			removeFirst();
-			return;
-		}
-
-		if (pos > getSize()) {
-			return;
-		}
-
-		LinkedListNode<T> current = first;
-
-		int count = 0;
-
-		while (count != pos - 1) {
-			current = current.getNext();
-			count++;
-		}
-
-		LinkedListNode<T> toRemove = current.getNext();
-		current.setNext(toRemove.getNext());
+		nodes.remove(pos);
 	}
 
 	@Override
-	public T get(int pos) {
-		Iterator<T> iterator = iterator();
-
-		for (int i = 0; i < pos; i++) {
-			iterator.next();
-		}
-
-		return iterator.next();
+	public Object get(int pos) {
+		return nodes.get(pos);
 	}
 
 	@Override
 	public void removeFirst() {
-		first = first.getNext();
+		nodes.remove(0);
 	}
 
 	@Override
-	public T getFirst() {
-		return first.getValue();
+	public Object getFirst() {
+		return nodes.get(0);
 	}
 
 	@Override
 	public int getSize() {
-
-		int size = 0;
-		Iterator<T> iterator = iterator();
-
-		while(iterator.hasNext()) {
-			size++;
-			iterator.next();
-		}
-
-		return size;
-	}
-
-	@Override
-	public Iterator<T> iterator() {
-		return new LinkedListIterator<>(first);
+		return nodes.size();
 	}
 }
