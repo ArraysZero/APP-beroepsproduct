@@ -14,36 +14,62 @@ import java.util.HashMap;
 
 public class Checker {
 
-    private IHANLinkedList<HashMap<String, ExpressionType>> variableTypes;
+    private IHANLinkedList<Variables> variableTypes;
 
     public void check(AST ast) {
          variableTypes = new HANLinkedList<>();
 
-        checkNode(ast.root);
+        checkNode(ast.root, 0);
     }
 
-    private void checkNode(ASTNode node){
+    private void checkNode(ASTNode node, int depth){
+        //System.out.println("check node");
         if(node instanceof Declaration){
+            //System.out.println("declaration");
             checkDeclaration((Declaration) node);
         } else if (node instanceof Operation){
+            //System.out.println("operation");
             checkOperation((Operation) node);
         } else if (node instanceof IfClause){
+            //System.out.println("if clause");
             checkIfClause((IfClause) node);
+        } else if (node instanceof VariableAssignment){
+            Variables variable = new Variables((VariableReference) ((VariableAssignment) node).name, depth, ((VariableAssignment) node).expression);
+            variableTypes.addFirst(variable);
+        } else if (node instanceof VariableReference){
+            //checkScope((VariableReference) node);
         }
 
         if(node.getChildren().size() > 0){
             //System.out.println("kinderen");
-            for (int i = 0; i < node.getChildren().size() - 1; i++){
-                checkNode(node.getChildren().get(i));
+            depth++;
+            for (int i = 0; i < node.getChildren().size(); i++){
+                //System.out.println("een kind");
+                checkNode(node.getChildren().get(i), depth);
             }
         }
     }
 
+
+
     //TODO: check scope -> VariableExistence
+    private void checkScope(VariableReference reference){
+        for (int i = 0; i < variableTypes.getSize(); i++){
+            if(reference.name == variableTypes.get(i).getVariable().name){
+                return;
+            }
+        }
+        reference.setError("variabele buiten de scope");
+    }
 
     private void checkDeclaration(Declaration declaration){
+        if (declaration.expression instanceof VariableReference || declaration.expression instanceof Operation){
+            return;
+        }
+
         switch (declaration.property.name){
             case "color":
+                System.out.println("check de color");
                 if(!(declaration.expression instanceof ColorLiteral)){
                     declaration.setError("color value can only be color literal");
                 }
@@ -96,7 +122,7 @@ public class Checker {
 
     //TODO: als conditie is boolean -> CheckCondition
     private void checkIfClause(IfClause clause){
-        if (!(clause.conditionalExpression instanceof BoolLiteral)){
+        if (!(clause.conditionalExpression instanceof BoolLiteral || clause.conditionalExpression instanceof VariableReference)){
             clause.setError("conditional expression is not boolean");
         }
     }
