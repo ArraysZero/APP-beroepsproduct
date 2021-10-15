@@ -4,8 +4,10 @@ import nl.han.ica.datastructures.HANLinkedList;
 import nl.han.ica.datastructures.IHANLinkedList;
 import nl.han.ica.icss.ast.*;
 import nl.han.ica.icss.ast.literals.*;
+import nl.han.ica.icss.ast.operations.AddOperation;
 import nl.han.ica.icss.ast.operations.DivideOperation;
 import nl.han.ica.icss.ast.operations.MultiplyOperation;
+import nl.han.ica.icss.ast.operations.SubtractOperation;
 import nl.han.ica.icss.ast.types.ExpressionType;
 import org.checkerframework.checker.units.qual.A;
 
@@ -45,9 +47,6 @@ public class Checker {
         }
     }
 
-
-
-    //TODO: check scope -> VariableExistence
     private void checkScope(VariableReference reference){
         boolean exists = false;
 
@@ -123,30 +122,39 @@ public class Checker {
 
     }
 
-    //TODO: rekenen met cijfers -> CheckOperation
-    private void checkOperation(Operation operation){
+    private Literal checkOperation(Operation operation){
         Expression left = operation.lhs;
         Expression right = operation.rhs;
 
-        if (left instanceof Operation){
-            checkOperation((Operation) left);
-        }
-        if (right instanceof Operation){
-            checkOperation((Operation) right);
+        if (left instanceof VariableReference){
+            Literal value = checkVarType((VariableReference) left);
         }
 
-        if (left instanceof ColorLiteral || left instanceof BoolLiteral || right instanceof ColorLiteral || right instanceof BoolLiteral){
-            operation.setError("boolean and color literals are not allowed in operations");
+        if (right instanceof VariableReference){
+            Literal value = checkVarType((VariableReference) right);
         }
 
-        if (operation instanceof DivideOperation || operation instanceof MultiplyOperation){
-            if (left instanceof ScalarLiteral || right instanceof ScalarLiteral){
-                operation.setError("multiplacation and division cant be dont with scalar literal");
+        if (left instanceof BoolLiteral || right instanceof BoolLiteral){
+            operation.setError("operation cant contain boolean");
+        } else if (left instanceof ColorLiteral || right instanceof ColorLiteral){
+            operation.setError("operation cant contain color");
+        } else {
+            if (left instanceof Operation){
+                left = checkOperation((Operation) left);
             }
+
+            if (right instanceof Operation) {
+                right = checkOperation((Operation) left);
+            }
+        }
+
+        if (left instanceof PixelLiteral || left instanceof PercentageLiteral){
+            return (Literal) left;
+        } else {
+            return (Literal) right;
         }
     }
 
-    //TODO: als conditie is boolean -> CheckCondition
     private void checkIfClause(IfClause clause){
         if (!(clause.conditionalExpression instanceof BoolLiteral || clause.conditionalExpression instanceof VariableReference)){
             clause.setError("conditional expression is not boolean");
