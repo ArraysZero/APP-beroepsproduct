@@ -19,7 +19,7 @@ import java.util.LinkedList;
 
 public class Evaluator implements Transform {
 
-    private IHANLinkedList<HashMap<String, Literal>> variableValues;
+    private IHANLinkedList<HashMap<String, Expression>> variableValues;
 
     public Evaluator() {
         variableValues = new HANLinkedList<>();
@@ -29,35 +29,52 @@ public class Evaluator implements Transform {
     public void apply(AST ast) {
         variableValues = new HANLinkedList<>();
 
-        transformNode(ast.root);
+        transformSheet(ast.root);
     }
 
-    private void transformNode (ASTNode node){
-
-        if (node instanceof VariableAssignment){
-            Expression expression = ((VariableAssignment) node).expression;
-            expression = transformExpression(expression);
-            variableValues.getFirst().put(((VariableAssignment) node).name.name, (Literal) expression);
-        }
-
-        if (node instanceof Expression){
-            transformExpression((Expression) node);
-        }
-
-        if (node instanceof IfClause){
-            transformIfClause((IfClause) node);
-        }
-
-        if(node.getChildren().size() > 0){
-            variableValues.addFirst(new HashMap<>());
-            for (int i = 0; i < node.getChildren().size(); i++){
-                transformNode(node.getChildren().get(i));
+    private void transformSheet(Stylesheet sheet){
+        variableValues.addFirst(new HashMap<>());
+        ArrayList<ASTNode> toRemove = new ArrayList<>();
+        for (int i = 0; i < sheet.getChildren().size(); i++){
+            if(sheet.getChildren().get(i) instanceof VariableAssignment){
+                variableValues.getFirst().put(((VariableAssignment) sheet.getChildren().get(i)).name.name, ((VariableAssignment) sheet.getChildren().get(i)).expression);
+                toRemove.add(sheet.getChildren().get(i));
             }
-            variableValues.removeFirst();
+
+            if (sheet.getChildren().get(i) instanceof Stylerule){
+                transformStyleRule((Stylerule) sheet.getChildren().get(i));
+            }
         }
+
+        for (int i = 0; i < toRemove.size(); i++){
+            sheet.removeChild(toRemove.get(i));
+        }
+
+        variableValues.removeFirst();
     }
 
-    private Literal transformExpression (Expression expression){
+    private void transformStyleRule (Stylerule rule){
+        ArrayList<ASTNode> transformedNodes = new ArrayList<>();
+        variableValues.addFirst(new HashMap<>());
+
+        for (int i = 0; i < rule.getChildren().size(); i++){
+            if (rule.getChildren().get(i) instanceof Declaration){
+                transformedNodes.add(transformDeclaration((Declaration) rule.getChildren().get(i)));
+            }
+        }
+
+        rule.body = transformedNodes;
+        variableValues.removeFirst();
+    }
+
+    private Declaration transformDeclaration (Declaration declaration){
+        Expression expression = transformExpression(declaration.expression);
+        declaration.expression = expression;
+
+        return declaration;
+    }
+
+    private Literal transformExpression(Expression expression){
         if (expression instanceof Operation){
             return transformOperation((Operation) expression);
         }
@@ -66,91 +83,80 @@ public class Evaluator implements Transform {
             return transformVarReference((VariableReference) expression);
         }
 
-        return (Literal) expression;
-    }
-
-    private Literal transformOperation (Operation operation){
-        Literal left, right;
-
-        left = transformExpression(operation.lhs);
-        right = transformExpression(operation.rhs);
-
-        Literal touse;
-
-        if (left instanceof ScalarLiteral){
-            touse = right;
-        } else {
-            touse = left;
+        if (expression instanceof Literal){
+            return (Literal) expression;
         }
 
+        return null;
+    }
+
+    private Literal transformOperation(Operation operation){
+        Expression left = operation.lhs;
+        Expression right = operation.rhs;
+
+        int leftValue = 0;
+        int rightValue = 0;
+
+        if (left instanceof Operation){
+            left = transformOperation((Operation) left);
+        } else if (left instanceof VariableReference){
+            left = transformVarReference((VariableReference) left);
+        }
+
+        if (left instanceof PixelLiteral){
+            leftValue = ((PixelLiteral) left).value;
+        } else if (left instanceof PercentageLiteral){
+            leftValue = ((PercentageLiteral) left).value;
+        } else if (left instanceof ScalarLiteral){
+            leftValue = ((ScalarLiteral) left).value;
+        }
+
+        if (right instanceof Operation){
+            right = transformOperation((Operation) right);
+        } else if (right instanceof VariableReference){
+            right = transformVarReference((VariableReference) right);
+        }
+
+        if (right instanceof PixelLiteral){
+            rightValue = ((PixelLiteral) right).value;
+        } else if (right instanceof PercentageLiteral){
+            rightValue = ((PercentageLiteral) right).value;
+        } else if (right instanceof ScalarLiteral){
+            rightValue = ((ScalarLiteral) right).value;
+        }
 
         if (operation instanceof AddOperation){
-            return newLiteral(touse, getLiteralValue(left) + getLiteralValue(right));
+            return operation((Literal) left, leftValue + rightValue);
         } else if (operation instanceof DivideOperation){
-            return newLiteral(touse, getLiteralValue(left) / getLiteralValue(right));
+            return operation((Literal) left, leftValue / rightValue);
         } else if (operation instanceof MultiplyOperation){
-            return newLiteral(touse, getLiteralValue(left) * getLiteralValue(right));
+            return operation((Literal) left, leftValue * rightValue);
         } else if (operation instanceof SubtractOperation){
-            return newLiteral(touse, getLiteralValue(left) - getLiteralValue(right));
+            return operation((Literal) left, leftValue - rightValue);
+        } else {
+            return null;
         }
-
-        return null;
     }
 
-    private Literal newLiteral(Literal literal, int value) {
-        if (literal instanceof PixelLiteral) {
+    private Literal operation (Literal literal, int value){
+        if (literal instanceof PercentageLiteral){
             return new PixelLiteral(value);
-        } else if (literal instanceof ScalarLiteral) {
+        } else if (literal instanceof PixelLiteral){
+            return new PixelLiteral(value);
+        } else if (literal instanceof ScalarLiteral){
             return new ScalarLiteral(value);
-        } else if (literal instanceof PercentageLiteral) {
-            return new PercentageLiteral(value);
+        } else {
+            return null;
         }
-
-        return null;
     }
 
-    private int getLiteralValue(Literal literal){
-        if (literal instanceof PixelLiteral) {
-            return ((PixelLiteral) literal).value;
-        } else if (literal instanceof ScalarLiteral) {
-            return ((ScalarLiteral) literal).value;
-        } else if (literal instanceof PercentageLiteral) {
-            return ((PercentageLiteral) literal).value;
-        }
-
-        return 0;
-    }
-
-    private Literal transformVarReference(VariableReference reference){
+    private Literal transformVarReference (VariableReference reference){
         for (int i = 0; i < variableValues.getSize(); i++){
             if (variableValues.get(i).get(reference.name) != null){
-                return variableValues.get(i).get(reference.name);
+                return transformExpression(variableValues.get(i).get(reference.name));
             }
         }
 
         return null;
-    }
-
-    private void transformIfClause (IfClause clause){
-        BoolLiteral bool = (BoolLiteral) transformExpression(clause.conditionalExpression);
-
-        if (bool.value){ //if true
-            if (clause.elseClause != null){
-                clause.elseClause.body = new ArrayList<>();
-            }
-            clause.elseClause = null;
-        } else {
-            if (clause.elseClause != null){
-                clause.body = clause.elseClause.body;
-                clause.elseClause.body = new ArrayList<>();
-            } else {
-                clause.body = new ArrayList<>();
-                return;
-            }
-        }
-
-        for (int i = 0; i < clause.body.size(); i++){
-            transformNode(clause.body.get(i));
-        }
     }
 }

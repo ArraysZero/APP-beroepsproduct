@@ -70,7 +70,7 @@ literal: boolliteral | colorliteral | percentageliteral | pixelliteral | scalarl
 
 classselector: CLASS_IDENT;
 tagselector: LOWER_IDENT;
-idselector: ID_IDENT;
+idselector: ID_IDENT | COLOR;
 selector: (tagselector | classselector | idselector);
 
 body: (declaration | ifclause | variableassignment)*;
