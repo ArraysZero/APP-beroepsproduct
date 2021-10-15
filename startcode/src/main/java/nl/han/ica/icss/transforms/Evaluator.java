@@ -77,7 +77,7 @@ public class Evaluator implements Transform {
                 transformIfClause((IfClause) rule.getChildren().get(i));
                 ArrayList<ASTNode> ifBody = transformIfClause((IfClause) rule.getChildren().get(i));
                 for (int n = 0; n < ifBody.size(); n++){
-                    transformedNodes.add(ifBody.get(i));
+                    transformedNodes.add(ifBody.get(n));
                 }
             }
         }
@@ -196,7 +196,7 @@ public class Evaluator implements Transform {
             if (clause.body.get(i) instanceof IfClause){
                 ArrayList<ASTNode> ifBody = transformIfClause((IfClause) clause.body.get(i));
                 for (int n = 0; n < ifBody.size(); n++){
-                    bodyNodes.add(ifBody.get(i));
+                    bodyNodes.add(ifBody.get(n));
                 }
             }
             if (clause.body.get(i) instanceof VariableAssignment){
