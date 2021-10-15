@@ -50,7 +50,6 @@ nl\han\ica\icss\parser\ICSSParser$ElseclauseContext.class
 nl\han\ica\icss\gui\MainGui$2.class
 nl\han\ica\icss\parser\ICSSParser$SelectorContext.class
 nl\han\ica\datastructures\HANLinkedList.class
-nl\han\ica\icss\ast\operations\DivideOperation.class
 nl\han\ica\icss\parser\ICSSParser$ScalarliteralContext.class
 nl\han\ica\icss\ast\ElseClause.class
 nl\han\ica\icss\ast\literals\ScalarLiteral.class

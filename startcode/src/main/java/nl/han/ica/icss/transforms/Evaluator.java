@@ -8,14 +8,11 @@ import nl.han.ica.icss.ast.literals.PercentageLiteral;
 import nl.han.ica.icss.ast.literals.PixelLiteral;
 import nl.han.ica.icss.ast.literals.ScalarLiteral;
 import nl.han.ica.icss.ast.operations.AddOperation;
-import nl.han.ica.icss.ast.operations.DivideOperation;
 import nl.han.ica.icss.ast.operations.MultiplyOperation;
 import nl.han.ica.icss.ast.operations.SubtractOperation;
-import org.checkerframework.checker.units.qual.A;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 
 public class Evaluator implements Transform {
 
@@ -37,7 +34,7 @@ public class Evaluator implements Transform {
         ArrayList<ASTNode> toRemove = new ArrayList<>();
         for (int i = 0; i < sheet.getChildren().size(); i++){
             if(sheet.getChildren().get(i) instanceof VariableAssignment){
-                variableValues.getFirst().put(((VariableAssignment) sheet.getChildren().get(i)).name.name, ((VariableAssignment) sheet.getChildren().get(i)).expression);
+                addVar((VariableAssignment) sheet.getChildren().get(i));
                 toRemove.add(sheet.getChildren().get(i));
             }
 
@@ -53,6 +50,21 @@ public class Evaluator implements Transform {
         variableValues.removeFirst();
     }
 
+    private void addVar(VariableAssignment var) {
+        System.out.println("add var");
+        boolean exists = false;
+        for (int i = 0; i < variableValues.getSize(); i++){
+            if (variableValues.get(i).get(var.name.name) != null){
+                variableValues.get(i).replace(var.name.name, var.expression);
+                exists = true;
+            }
+        }
+
+        if (!exists){
+            variableValues.getFirst().put(var.name.name, var.expression);
+        }
+    }
+
     private void transformStyleRule (Stylerule rule){
         ArrayList<ASTNode> transformedNodes = new ArrayList<>();
         variableValues.addFirst(new HashMap<>());
@@ -60,6 +72,13 @@ public class Evaluator implements Transform {
         for (int i = 0; i < rule.getChildren().size(); i++){
             if (rule.getChildren().get(i) instanceof Declaration){
                 transformedNodes.add(transformDeclaration((Declaration) rule.getChildren().get(i)));
+            }
+            if (rule.getChildren().get(i) instanceof IfClause){
+                transformIfClause((IfClause) rule.getChildren().get(i));
+                ArrayList<ASTNode> ifBody = transformIfClause((IfClause) rule.getChildren().get(i));
+                for (int n = 0; n < ifBody.size(); n++){
+                    transformedNodes.add(ifBody.get(i));
+                }
             }
         }
 
@@ -127,8 +146,6 @@ public class Evaluator implements Transform {
 
         if (operation instanceof AddOperation){
             return operation((Literal) left, leftValue + rightValue);
-        } else if (operation instanceof DivideOperation){
-            return operation((Literal) left, leftValue / rightValue);
         } else if (operation instanceof MultiplyOperation){
             return operation((Literal) left, leftValue * rightValue);
         } else if (operation instanceof SubtractOperation){
@@ -159,4 +176,52 @@ public class Evaluator implements Transform {
 
         return null;
     }
+
+    private ArrayList<ASTNode> transformIfClause (IfClause clause){
+        BoolLiteral conditional = (BoolLiteral) transformExpression(clause.conditionalExpression);
+        ArrayList<ASTNode> bodyNodes = new ArrayList<>();
+
+        if (conditional.value){
+            clause.elseClause = null;
+        } else if (clause.elseClause != null){
+            clause.body = clause.elseClause.body;
+        } else {
+            return new ArrayList<>();
+        }
+
+        for (int i = 0; i < clause.body.size(); i++){
+            if (clause.body.get(i) instanceof Declaration){
+                bodyNodes.add(transformDeclaration((Declaration) clause.body.get(i)));
+            }
+            if (clause.body.get(i) instanceof IfClause){
+                ArrayList<ASTNode> ifBody = transformIfClause((IfClause) clause.body.get(i));
+                for (int n = 0; n < ifBody.size(); n++){
+                    bodyNodes.add(ifBody.get(i));
+                }
+            }
+            if (clause.body.get(i) instanceof VariableAssignment){
+                addVar((VariableAssignment) clause.body.get(i));
+            }
+        }
+
+        return bodyNodes;
+    }
 }
+
+/*
+
+ArrayList<ASTNode> transformedNodes = new ArrayList<>();
+        variableValues.addFirst(new HashMap<>());
+
+        for (int i = 0; i < rule.getChildren().size(); i++){
+            if (rule.getChildren().get(i) instanceof Declaration){
+                transformedNodes.add(transformDeclaration((Declaration) rule.getChildren().get(i)));
+            }
+            if (rule.getChildren().get(i) instanceof IfClause){
+                transformIfClause((IfClause) rule.getChildren().get(i));
+            }
+        }
+
+        rule.body = transformedNodes;
+        variableValues.removeFirst();
+ */
