@@ -19,10 +19,10 @@ public class Checker {
     private IHANLinkedList<HashMap<String, Expression>> variableTypes = new HANLinkedList<>();
 
     public void check(AST ast) {
-        checkNode(ast.root, 0);
+        checkNode(ast.root);
     }
 
-    private void checkNode(ASTNode node, int depth){
+    private void checkNode(ASTNode node){
         if(node instanceof Declaration){
             checkDeclaration((Declaration) node);
         } else if (node instanceof Operation){
@@ -37,9 +37,8 @@ public class Checker {
 
         if(node.getChildren().size() > 0){
             variableTypes.addFirst(new HashMap<>());
-            depth++;
             for (int i = 0; i < node.getChildren().size(); i++){
-                checkNode(node.getChildren().get(i), depth);
+                checkNode(node.getChildren().get(i));
             }
 
             variableTypes.removeFirst();
