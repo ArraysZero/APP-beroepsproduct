@@ -136,7 +136,7 @@ public class Checker {
             }
 
             if (right instanceof Operation) {
-                right = checkOperation((Operation) left);
+                right = checkOperation((Operation) right);
             }
         }
 
