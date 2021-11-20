@@ -34,6 +34,7 @@ public class Evaluator implements Transform {
         ArrayList<ASTNode> toRemove = new ArrayList<>();
         for (int i = 0; i < sheet.getChildren().size(); i++){
             if(sheet.getChildren().get(i) instanceof VariableAssignment){
+                System.out.println("var assign");
                 addVar((VariableAssignment) sheet.getChildren().get(i));
                 toRemove.add(sheet.getChildren().get(i));
             }
@@ -55,12 +56,14 @@ public class Evaluator implements Transform {
         boolean exists = false;
         for (int i = 0; i < variableValues.getSize(); i++){
             if (variableValues.get(i).get(var.name.name) != null){
+                System.out.println("existing far");
                 variableValues.get(i).replace(var.name.name, var.expression);
                 exists = true;
             }
         }
 
         if (!exists){
+            System.out.println("new var");
             variableValues.getFirst().put(var.name.name, var.expression);
         }
     }
@@ -79,6 +82,11 @@ public class Evaluator implements Transform {
                 for (int n = 0; n < ifBody.size(); n++){
                     transformedNodes.add(ifBody.get(n));
                 }
+            }
+            if(rule.getChildren().get(i) instanceof VariableAssignment){
+                System.out.println("var assign");
+                addVar((VariableAssignment) rule.getChildren().get(i));
+                //toRemove.add(rule.getChildren().get(i));
             }
         }
 
