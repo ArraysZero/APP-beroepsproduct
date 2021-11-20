@@ -88,7 +88,7 @@ public class allTests {
 	public void testCH03T1() throws IOException {
 		Pipeline pipeline = new Pipeline();
 		pipeline.parseString(this.readFile("CH03-T1.icss"));
-		assertFalse(pipeline.isParsed());
+		assertFalse(pipeline.isChecked());
 	}
 
 	@Test

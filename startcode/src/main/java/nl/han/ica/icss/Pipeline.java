@@ -83,6 +83,7 @@ public class Pipeline implements ANTLRErrorListener {
         parsed = errors.isEmpty();
         checked = transformed = false;
     }
+
     public boolean check() {
             if(ast == null)
                 return false;
