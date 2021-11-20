@@ -20,7 +20,7 @@ public class Generator {
 
 	public String generate(AST ast) {
 		generateNode(ast.root);
-        return builder.toString();
+        return builder.toString() + "\n";
 	}
 
 	private void generateNode(ASTNode astNode) {
@@ -30,7 +30,7 @@ public class Generator {
 
 				this.generateDeclaration(astNode.getChildren().get(i));
 
-				this.builder.append("}\n\n");
+				this.builder.append("}\n");
 			}
 		}
 
@@ -50,7 +50,7 @@ public class Generator {
 		String str = String.join(", ", selectors);
 		this.builder.append(str);
 
-		this.builder.append(" {\n");
+		this.builder.append("{\n");
 	}
 
 	private void generateDeclaration(ASTNode astNode) {
@@ -59,7 +59,7 @@ public class Generator {
 				Declaration declaration = (Declaration) node;
 				this.builder.append("  ")
 						.append(declaration.property.name)
-						.append(": ")
+						.append(":")
 						.append(this.expressionToString(declaration.expression))
 						.append(";\n");
 			}
