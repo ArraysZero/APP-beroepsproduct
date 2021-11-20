@@ -1,0 +1,59 @@
+VarTrue := TRUE;
+VarFalse := FALSE;
+RefToVarTrue := VarTrue;
+
+.bool-literals-01245 {
+    background-color: #000000;
+    if [TRUE] {
+        width: 1px;
+    }
+    height: 2px;
+    if [FALSE] {
+        width: 3px;
+    } else {
+        width: 4px;
+    }
+    height: 5px;
+}
+
+#bool-vars-0135 {
+    background-color: #000000;
+    if [VarTrue] {
+        width: 1px;
+    } else {
+        width: 2px;
+    }
+    height: 3px;
+    if [VarFalse] {
+        width: 4px;
+    }
+    height: 5px;
+}
+
+nested-ifs-01358 {
+    background-color: #000000;
+    if [VarTrue] {
+        width: 1px;
+        if [VarFalse] {
+            height: 2%;
+        } else {
+            height: 3%;
+        }
+    } else {
+        height: 4%;
+    }
+    color: #000005;
+    if [FALSE] {
+        width: 6%;
+        if [TRUE] {
+            height: 7px;
+        }
+    }
+    height: 8%;
+}
+
+double-ref-123456 {
+    if [RefToVarTrue] {
+        color: #123456;
+    }
+}

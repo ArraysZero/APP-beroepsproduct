@@ -1,0 +1,5 @@
+Width := 10px;
+
+a {
+	width: 20px * Width;
+}
