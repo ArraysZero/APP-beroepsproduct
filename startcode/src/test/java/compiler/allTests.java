@@ -104,4 +104,11 @@ public class allTests {
 		String expected = this.readFile("TR01-T3.css");
 		assertEquals(expected, output);
 	}
+
+	@Test
+	public void testTR021() throws IOException {
+		String output = this.getCSSOutput("TR02-1.icss");
+		String expected = this.readFile("TR02-1.css");
+		assertEquals(expected, output);
+	}
 }

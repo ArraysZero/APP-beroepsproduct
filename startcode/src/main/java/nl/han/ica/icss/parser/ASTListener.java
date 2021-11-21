@@ -168,7 +168,7 @@ public class ASTListener extends ICSSBaseListener {
 
 	@Override
 	public void enterPercentageliteral(ICSSParser.PercentageliteralContext ctx) {
-		ASTNode pixel = new PixelLiteral(ctx.getText());
+		ASTNode pixel = new PercentageLiteral(ctx.getText());
 		currentContainer.push(pixel);
 	}
 
