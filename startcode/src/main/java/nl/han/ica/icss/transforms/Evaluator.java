@@ -54,13 +54,12 @@ public class Evaluator implements Transform {
     private void addVar(VariableAssignment var) {
         System.out.println("add var");
         boolean exists = false;
-        //for (int i = 0; i < variableValues.getSize(); i++){
-            if (variableValues.get(0).get(var.name.name) != null){
-                System.out.println("existing far");
-                variableValues.get(0).replace(var.name.name, var.expression);
-                exists = true;
-            }
-        //}
+
+        if (variableValues.get(0).get(var.name.name) != null){
+            System.out.println("existing far");
+            variableValues.get(0).replace(var.name.name, var.expression);
+            exists = true;
+        }
 
         if (!exists){
             System.out.println("new var");
