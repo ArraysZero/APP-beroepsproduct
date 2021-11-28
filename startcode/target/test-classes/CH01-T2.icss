@@ -1,0 +1,8 @@
+LinkColor := #ff00ff;
+LinkColorTwo := LinkColor;
+LinkColorThree := LankColor;
+
+span {
+
+	color: LinkColor;
+}
