@@ -1,3 +1,6 @@
+# Dit is een uitwerking van de HAN ICSS tool
+hier is een 7,5 mee behaald in 2021-2021 S1
+
 # Readme for ICSSTool
 This file contains notes and issues for the ICSSTool.
 For assignment instructions, see [ASSIGNMENT.md](ASSIGNMENT.md)
